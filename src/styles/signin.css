@@ -1,8 +1,26 @@
+.background {
+    background-image: url(http://www.designbolts.com/wp-content/uploads/2014/03/Sea-green-blur-background1.jpg);
+    background-size: 100% 100%;
+    background-position: top center;
+}
+
 .card {
-    width: 500px;
-    height: 700px;
+    width: 25em;
+    height: 25em;
+    margin-top: 15em;
 }
 
 .card-content {
     padding: 10%;
+}
+
+.text {
+    text-align: center;
+}
+
+.google {
+    width: 14%;
+    border-radius: 50%;
+    background-color: ghostwhite;
+    padding: 4px;
 }

@@ -22,17 +22,20 @@ class Signin extends Component {
 
   render() {
     return (
+      <div className="background">
       <Grid container justify="center" alignItems="center">
         <Card className="card">
           <div className="card-content">
-            <h2>Please sign in.</h2>
+            <h2 className="text">Please sign in.</h2>
             <br/><br/>
             <Button size="large" variant="extendedFab" color="secondary">
-              Sign in with Google
+              <img className="google" src="https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png" alt="google"/>
+              &nbsp;	&nbsp; 	&nbsp; <h6>Sign in with Google</h6>
             </Button>
           </div>
         </Card>
       </Grid>
+      </div>
     );
   }
 }
