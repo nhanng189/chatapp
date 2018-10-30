@@ -1,13 +1,20 @@
 .background {
     background-image: url(http://www.designbolts.com/wp-content/uploads/2014/03/Sea-green-blur-background1.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: top center;
+}
+
+.signin-app-title {
+    text-align: center;
+    margin-top: 1.5em;
+    font-size: 5em;
+    font-weight: bolder;
 }
 
 .card {
     width: 25em;
     height: 25em;
-    margin-top: 15em;
+    margin-top: 3em;
 }
 
 .card-content {

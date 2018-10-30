@@ -3,18 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import auth from './reducers/auth';
+import rootReducer from './reducers/index';
 
-import { Provider } from 'react-redux'
-import { createStore, combineReducers, compose } from 'redux'
-import { firebaseReducer, reactReduxFirebase } from 'react-redux-firebase'
-import firebase from 'firebase'
-
-// Add firebase to reducers
-const rootReducer = combineReducers({
-    auth: auth,
-    firebase: firebaseReducer
-})
+import { Provider } from 'react-redux';
+import { createStore, compose } from 'redux';
+import { reactReduxFirebase } from 'react-redux-firebase';
+import firebase from 'firebase';
 
 // Firebase config
 const firebaseConfig = {

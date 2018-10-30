@@ -7,16 +7,16 @@ var myReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.SIGN_IN: {
             let base_provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithRedirect(base_provider)
-                .then(result => {})
-                .catch(error => {})
+            firebase.auth().signInWithPopup(base_provider)
+                // .then(result => {})
+                // .catch(error => {})
             return state;
         }
 
         case types.SIGN_OUT: {
             firebase.auth().signOut()
-            .then(result => {})
-            .catch(error => {})
+            // .then(result => {})
+            // .catch(error => {})
             return state;
         }
 

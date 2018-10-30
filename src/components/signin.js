@@ -9,32 +9,27 @@ import '../styles/signin.css';
 import * as actions from '../actions/index';
 
 class Signin extends Component {
-
   onSignIn = (event) => {
     event.preventDefault();
     this.props.onSignIn();
   }
 
-  onSignOut = (event) => {
-    event.preventDefault();
-    this.props.onSignOut();
-  }
-
   render() {
     return (
-      <div className="background">
-      <Grid container justify="center" alignItems="center">
-        <Card className="card">
-          <div className="card-content">
-            <h2 className="text">Please sign in.</h2>
-            <br/><br/>
-            <Button size="large" variant="extendedFab" color="secondary">
-              <img className="google" src="https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png" alt="google"/>
-              &nbsp;	&nbsp; 	&nbsp; <h6>Sign in with Google</h6>
-            </Button>
-          </div>
-        </Card>
-      </Grid>
+      <div>
+        <div className="signin-app-title">Chat 69</div>
+        <Grid container justify="center" alignItems="center">
+          <Card className="card">
+            <div className="card-content">
+              <h4 className="text">Please sign in.</h4>
+              <br />
+              <Button size="large" variant="extendedFab" color="secondary" onClick={this.onSignIn}>
+                <img className="google" src="https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png" alt="google" />
+                &nbsp;	&nbsp; 	&nbsp; <h6>Sign in with Google</h6>
+              </Button>
+            </div>
+          </Card>
+        </Grid>
       </div>
     );
   }
@@ -49,9 +44,6 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onSignIn: () => {
       dispatch(actions.signIn());
-    },
-    onSignOut: () => {
-      dispatch(actions.signOut());
     }
   }
 }
