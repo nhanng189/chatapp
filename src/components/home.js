@@ -12,19 +12,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Avatar from '@material-ui/core/Avatar';
 
 import '../styles/home.css';
-import * as actions from './../actions/index';
+import * as actions from '../actions/index';
 
 class Home extends Component {
+//#region navibar
   constructor(props) {
     super(props);
     this.state = {
       anchorEl: null
     }
-  }
-
-  onSignOut = (event) => {
-    event.preventDefault();
-    this.props.onSignOut();
   }
 
   state = {
@@ -38,6 +34,12 @@ class Home extends Component {
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
   };
+//#endregion navibar
+
+  onSignOut = (event) => {
+    event.preventDefault();
+    this.props.onSignOut();
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -63,7 +65,7 @@ class Home extends Component {
               <MenuIcon />
             </IconButton>
             <Typography className="app-title" variant="h4" color="inherit" noWrap>
-              Chat69
+              Chatugly
             </Typography>
             <div >
               <Button
@@ -72,8 +74,8 @@ class Home extends Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar alt="avatar" src={this.props.authData.avatarUrl} />
-                &nbsp;	&nbsp; <h6>{this.props.authData.displayName}</h6>
+                <Avatar alt="avatar" src={this.props.auth.photoURL} />
+                &nbsp;	&nbsp; <h6>{this.props.auth.displayName}</h6>
               </Button>
             </div>
           </Toolbar>
@@ -86,7 +88,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authData: state.firebase.profile
+    auth: state.firebase.auth
   }
 }
 

@@ -8,8 +8,14 @@ var myReducer = (state = initialState, action) => {
         case types.SIGN_IN: {
             let base_provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(base_provider)
-                // .then(result => {})
-                // .catch(error => {})
+                .then(() => {
+                    let generateUserId = firebase.auth().currentUser.email.substring(0, firebase.auth().currentUser.email.indexOf("@"));
+                    firebase.database().ref('/users/' + generateUserId).set({
+                        email: firebase.auth().currentUser.email,
+                        name: firebase.auth().currentUser.displayName,
+                        avatar: firebase.auth().currentUser.photoURL
+                    })
+                })
             return state;
         }
 

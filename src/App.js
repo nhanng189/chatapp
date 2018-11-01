@@ -7,10 +7,10 @@ import Loading from './components/loading'
 
 class App extends Component {
   render() {
-    if(!this.props.firebase.isLoaded || !this.props.profile.isLoaded) return (
+    if(!this.props.auth.isLoaded) return (
       <Loading />
     )
-    if (this.props.firebase.isEmpty) return (
+    if (this.props.auth.isEmpty) return (
       <Signin />
     ); 
     return <Home />;
@@ -19,8 +19,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    profile: state.firebase.profile,
-    firebase: state.firebase.auth
+    auth: state.firebase.auth
   }
 }
 
