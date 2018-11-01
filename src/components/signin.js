@@ -17,7 +17,7 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        <div className="signin-app-title">Chat 69</div>
+        <div className="signin-app-title">Chatugly</div>
         <Grid container justify="center" alignItems="center">
           <Card className="card">
             <div className="card-content">
