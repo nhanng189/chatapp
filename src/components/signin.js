@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { firebaseConnect } from 'react-redux-firebase';
 
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import '../styles/signin.css';
-import * as actions from '../actions/index';
+import { compose } from 'redux';
 
 class Signin extends Component {
-  onSignIn = (event) => {
-    event.preventDefault();
-    this.props.onSignIn();
+  onSignIn = (firebase) => {
+    firebase.login({ provider: 'google', type: 'popup' });
   }
 
   render() {
@@ -23,7 +23,7 @@ class Signin extends Component {
             <div className="card-content">
               <h4 className="text">Please sign in.</h4>
               <br />
-              <Button size="large" variant="extendedFab" color="secondary" onClick={this.onSignIn}>
+              <Button size="large" variant="extendedFab" color="secondary" onClick={()=>this.onSignIn(this.props.firebase)}>
                 <img className="google" src="https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png" alt="google" />
                 &nbsp;	&nbsp; 	&nbsp; <h6>Sign in with Google</h6>
               </Button>
@@ -42,10 +42,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onSignIn: () => {
-      dispatch(actions.signIn());
-    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+export default compose(
+  firebaseConnect(), //can use this.props.firebases
+  connect(mapStateToProps, mapDispatchToProps)
+)(Signin);

@@ -1,33 +1,24 @@
-import * as types from './../actions/types'
-import firebase from 'firebase'
+// import * as types from './../actions/types'
+// import { getFirebase } from 'react-redux-firebase';
 
-var initialState = {};
+// var initialState = {};
 
-var myReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case types.SIGN_IN: {
-            let base_provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(base_provider)
-                .then(() => {
-                    let generateUserId = firebase.auth().currentUser.email.substring(0, firebase.auth().currentUser.email.indexOf("@"));
-                    firebase.database().ref('/users/' + generateUserId).set({
-                        email: firebase.auth().currentUser.email,
-                        name: firebase.auth().currentUser.displayName,
-                        avatar: firebase.auth().currentUser.photoURL
-                    })
-                })
-            return state;
-        }
+// var myReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//         case types.SIGN_IN: {
+//             const firebase = getFirebase();
+//             firebase.login({ provider: 'google', type: 'popup' });
+//             return state;
+//         }
 
-        case types.SIGN_OUT: {
-            firebase.auth().signOut()
-            // .then(result => {})
-            // .catch(error => {})
-            return state;
-        }
+//         case types.SIGN_OUT: {
+//             const firebase = getFirebase();
+//             firebase.logout();
+//             return state;
+//         }
 
-        default: return state;
-    }
-}
+//         default: return state;
+//     }
+// }
 
-export default myReducer;
+// export default (myReducer);

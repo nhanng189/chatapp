@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { firebaseConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -36,15 +37,18 @@ class Home extends Component {
   };
 //#endregion navibar
 
-  onSignOut = (event) => {
-    event.preventDefault();
-    this.props.onSignOut();
+  onSignOut = (firebase) => {
+    firebase.logout();
+  }
+
+  componentDidMount() {
+    this.props.onListUser();
   }
 
   render() {
+    console.log(this.props.firebase)
     const { anchorEl } = this.state;
     const isMenuOpen = Boolean(anchorEl);
-
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -53,7 +57,7 @@ class Home extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.onSignOut}>Sign out</MenuItem>
+        <MenuItem onClick={()=>this.onSignOut(this.props.firebase)}>Sign out</MenuItem>
       </Menu>
     );
 
@@ -94,10 +98,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onSignOut: () => {
-      dispatch(actions.signOut());
+    onListUser: () => {
+      dispatch(actions.listUser());
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Home);

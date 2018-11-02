@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './reducers/index';
-
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { createStore, compose } from 'redux';
-import { reactReduxFirebase } from 'react-redux-firebase';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
 import firebase from 'firebase';
 
 // Firebase config
@@ -24,12 +24,17 @@ firebase.initializeApp(firebaseConfig)
 // react-redux-firebase options
 const config = {
     userProfile: 'users', // firebase root where user profiles are stored
+    presence: 'presence', // where list of online users is stored in database
+    sessions: 'sessions', // where list of user sessions is stored in database (presence must be enabled)
     enableLogging: true, // enable/disable Firebase's database logging
+    attachAuthIsReady: true,
+    firebaseStateName: 'firebase'
 }
 
 // Add redux Firebase to compose
 const createStoreWithFirebase = compose(
-    reactReduxFirebase(firebase, config)
+    reactReduxFirebase(firebase, config),
+    applyMiddleware(thunk.withExtraArgument(getFirebase))
 )(createStore)
 
 // Create store with reducers and initial state
@@ -38,10 +43,12 @@ const store = createStoreWithFirebase(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>
-    , document.getElementById('root'));
+store.firebaseAuthIsReady.then(() => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <App />
+        </Provider>
+        , document.getElementById('root'));
+})
 
 serviceWorker.unregister();
