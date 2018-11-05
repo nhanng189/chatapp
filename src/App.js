@@ -25,11 +25,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, props) => {
-  return {}
-}
-
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(App);
+export default connect(mapStateToProps, null)(App);

@@ -1,3 +1,13 @@
+.MuiTypography-subheading-66 {
+    font-size: large !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.MuiTypography-body1-68 {
+    font-size: small !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
 .user-container {
     position: absolute;
     width: 99%;

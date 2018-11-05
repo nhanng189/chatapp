@@ -3,10 +3,21 @@
     width: 100%;
 }
 
-.message-container {
+.conservation-title {
+    height: 70px;
+    text-align: center !important;
+}
+
+.messages-container {
     width: 100%;
     height: calc(100% - 80px);
     margin-top: 9px;
+}
+
+.message-container {
+    margin-top: 10px;
+    width: 100%;
+    height: calc(100% - 80px);
     overflow-y: auto;
 }
 

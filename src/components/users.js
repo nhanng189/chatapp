@@ -52,6 +52,7 @@ class Users extends Component {
         users: users
       })
     })
+    console.log(this.props.firebase)
   }
 
   render() {

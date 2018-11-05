@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { firebaseConnect, getVal } from 'react-redux-firebase';
 import { compose } from 'redux';
+import moment from 'moment';
 import _ from 'lodash';
 
 import List from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
 
 import Message from './message';
 import '../styles/conversation.css';
@@ -31,6 +34,7 @@ class Conversation extends Component {
     onSubmit = (event) => {
         event.preventDefault();
         this.props.firebase.database().ref('/conversation/' + this.props.params.conversationId).push({
+            time: moment().format('lll'),
             senderId: this.props.my.uid,
             message: this.state.inputMessage
         })
@@ -56,19 +60,25 @@ class Conversation extends Component {
         if (this.props.messages) {
             elements = Object.values(this.props.messages).map((messageData) => {
                 return <Message message={messageData.message} senderId={messageData.senderId}
-                    my={this.props.my} user2={this.props.user2} />
+                    time={messageData.time} my={this.props.my} user2={this.props.user2} />
             })
         }
         else elements = "";
 
         return (
             <div className="conversation-container">
-                <div className="message-container">
-                    <List component="nav">
-                        {elements}
-                    </List>
-                    <div className="dummy-div"
-                        ref={(el) => { this.messagesEnd = el; }}>
+                <div className="messages-container">
+                    <ListItem className="conservation-title">
+                        {this.props.user2.displayName}
+                    </ListItem>
+                    <Divider/>
+                    <div className="message-container">
+                        <List component="nav">
+                            {elements}
+                        </List>
+                        <div className="dummy-div"
+                            ref={(el) => { this.messagesEnd = el; }}>
+                        </div>
                     </div>
                 </div>
                 <form onSubmit={this.onSubmit}>
