@@ -25,7 +25,6 @@ firebase.initializeApp(firebaseConfig)
 const config = {
     userProfile: 'users', // firebase root where user profiles are stored
     presence: 'presence', // where list of online users is stored in database
-    sessions: 'sessions', // where list of user sessions is stored in database (presence must be enabled)
     enableLogging: true, // enable/disable Firebase's database logging
     attachAuthIsReady: true,
     firebaseStateName: 'firebase'

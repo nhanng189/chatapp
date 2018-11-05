@@ -1,0 +1,16 @@
+.conversation-container {
+    height: 100%;
+    width: 100%;
+}
+
+.message-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    margin-top: 9px;
+    overflow-y: auto;
+}
+
+.dummy-div {
+    float: left;
+    clear: both;
+}
