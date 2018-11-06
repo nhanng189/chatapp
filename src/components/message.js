@@ -20,7 +20,7 @@ class Message extends Component {
                 </ListItem>
             </Tooltip>
         );
-        return <Tooltip>
+        return <Tooltip title={this.props.time} placement="top-end">
             <ListItem button>
                 <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
                 <ListItemText primary={this.props.message} />
