@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import moment from 'moment';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,6 +28,16 @@ class Appbar extends Component {
   state = {
     anchorEl: null,
   };
+
+  componentWillMount() {
+    var lastOnlineRef = this.props.firebase.database().ref('users/' + this.props.auth.uid + '/lastOnline');
+    var connectedRef = this.props.firebase.database().ref('.info/connected');
+    connectedRef.on('value', function (snap) {
+      if (snap.val() === true) {
+        lastOnlineRef.onDisconnect().set(moment().format('lll'));
+      }
+    });
+  }
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });

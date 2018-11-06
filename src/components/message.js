@@ -20,10 +20,12 @@ class Message extends Component {
                 </ListItem>
             </Tooltip>
         );
-        return <ListItem button>
-            <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
-            <ListItemText primary={this.props.message} />
-        </ListItem>
+        return <Tooltip>
+            <ListItem button>
+                <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
+                <ListItemText primary={this.props.message} />
+            </ListItem>
+        </Tooltip>
     }
 }
 

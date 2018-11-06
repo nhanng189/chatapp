@@ -18,14 +18,16 @@ class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
+      user2: {},
       users: [],
       presence: {}
     }
   }
 
-  handleListItemClick = (event, index) => {
-    this.setState({ selectedIndex: index });
+  handleListItemClick = (event, user2) => {
+    this.setState({
+      user2: user2
+    });
   };
 
   generateConversationId = (user1Id, user2Id) => {
@@ -48,24 +50,34 @@ class Users extends Component {
       let users = _.map(data.val(), (val, id) => {
         return { ...val, id: id }
       })
+      users.forEach(async (user) => {
+        if (typeof user.chatHistory === 'undefined') user.chatHistory = {};
+        if (typeof user.chatHistory[this.props.auth.uid] === 'undefined') user.chatHistory[this.props.auth.uid] = {};
+        if (typeof user.chatHistory[this.props.auth.uid].lastMessageTime === 'undefined') user.chatHistory[this.props.auth.uid].lastMessageTime = "";
+
+        console.log(user);
+      })
+      users = _.orderBy(users, `chatHistory.${this.props.auth.uid}.lastMessageTime`, 'desc');
       this.setState({
         users: users
       })
+      if (!this.state.user2.id) this.setState({
+        user2: users[0]
+      })
     })
-    console.log(this.props.firebase)
   }
 
   render() {
-    let elements = this.state.users.map((user, index) => {
+    let elements = this.state.users.map((user) => {
       return <ListItem
+        divider
         button
-        selected={this.state.selectedIndex === index}
-        onClick={event => this.handleListItemClick(event, index)}
+        onClick={event => this.handleListItemClick(event, user)}
       >
         <Avatar alt="avatar" src={user.avatarUrl} />
         {_.has(this.state.presence, user.id) === true
           ? <ListItemText primary={user.displayName} secondary={<i style={{ color: "green", paddingTop: "5px" }} className="fa fa-circle">&nbsp;&nbsp;Online</i>} />
-          : <ListItemText primary={user.displayName} secondary={<i style={{ color: "red", paddingTop: "5px" }} className="fa fa-circle">&nbsp;&nbsp;Offline</i>} />}
+          : <ListItemText primary={user.displayName} secondary={<i style={{ color: "red", paddingTop: "5px" }} className="fa fa-circle">&nbsp;&nbsp;Last seen: {user.lastOnline}</i>} />}
       </ListItem>
     });
 
@@ -88,7 +100,8 @@ class Users extends Component {
           </List>
         </Grid>
         <Grid item xs={9}>
-          <Conversation my={this.props.auth} user2={Object.assign({}, this.state.users[this.state.selectedIndex])} params={{ conversationId: this.generateConversationId(this.props.auth.uid, Object.assign({}, this.state.users[this.state.selectedIndex]).id) }} />
+          <Conversation my={this.props.auth} user2={this.state.user2}
+            params={{ conversationId: this.generateConversationId(this.props.auth.uid, this.state.user2.id) }} />
         </Grid>
       </Grid>
     </div>

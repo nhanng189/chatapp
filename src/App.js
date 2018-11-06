@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { compose } from 'redux';
+import { isLoaded, isEmpty } from 'react-redux-firebase';
 
 import Signin from './components/signin'
 import Home from './components/home'
@@ -9,12 +8,12 @@ import Loading from './components/loading'
 
 class App extends Component {
   render() {
-    if(!isLoaded(this.props.auth)) return (
+    if (!isLoaded(this.props.auth)) return (
       <Loading />
     )
     if (isEmpty(this.props.auth)) return (
       <Signin />
-    ); 
+    );
     return <Home />;
   }
 }

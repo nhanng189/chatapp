@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { firebaseConnect, getVal } from 'react-redux-firebase';
 import { compose } from 'redux';
 import moment from 'moment';
-import _ from 'lodash';
 
 import List from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import Message from './message';
 import '../styles/conversation.css';
@@ -37,6 +37,12 @@ class Conversation extends Component {
             time: moment().format('lll'),
             senderId: this.props.my.uid,
             message: this.state.inputMessage
+        })
+        this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid).set({
+            lastMessageTime: moment().format()
+        })
+        this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id).set({
+            lastMessageTime: moment().format()
         })
         this.setState({
             inputMessage: ""
@@ -69,7 +75,7 @@ class Conversation extends Component {
             <div className="conversation-container">
                 <div className="messages-container">
                     <ListItem className="conservation-title">
-                        {this.props.user2.displayName}
+                        <ListItemText>{this.props.user2.displayName}</ListItemText>
                     </ListItem>
                     <Divider/>
                     <div className="message-container">
