@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import IconButton from '@material-ui/core/IconButton';
 
 import Message from './message';
 import '../styles/conversation.css';
@@ -77,7 +79,7 @@ class Conversation extends Component {
                     <ListItem className="conservation-title">
                         <ListItemText>{this.props.user2.displayName}</ListItemText>
                     </ListItem>
-                    <Divider/>
+                    <Divider />
                     <div className="message-container">
                         <List component="nav">
                             {elements}
@@ -87,6 +89,12 @@ class Conversation extends Component {
                         </div>
                     </div>
                 </div>
+                <input style={{display: "none"}} accept="image" id="icon-button-file" type="file" />
+                <label htmlFor="icon-button-file">
+                    <IconButton color="primary" component="span">
+                        <PhotoCamera />
+                    </IconButton>
+                </label>
                 <form onSubmit={this.onSubmit}>
                     <TextField
                         name="inputMessage"

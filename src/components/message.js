@@ -14,14 +14,14 @@ class Message extends Component {
     render() {
         if (this.props.senderId === this.props.my.uid) return (
             <Tooltip title={this.props.time} placement="top-start">
-                <ListItem button className="my-message">
+                <ListItem className="my-message">
                     <ListItemText primary={this.props.message} />
                     <Avatar alt="avatar" src={this.props.my.photoURL} />
                 </ListItem>
             </Tooltip>
         );
-        return <Tooltip title={this.props.time} placement="top-end">
-            <ListItem button>
+        return <Tooltip title={this.props.time} placement="top-start">
+            <ListItem >
                 <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
                 <ListItemText primary={this.props.message} />
             </ListItem>

@@ -22,3 +22,13 @@
 .search {
     padding: 0 20px 0 20px;
 }
+
+.user-online {
+    color: green;
+    paddingTop: 5px;
+}
+
+.user-offline {
+    color: red;
+    paddingTop: 5px;
+}
