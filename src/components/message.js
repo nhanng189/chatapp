@@ -11,17 +11,44 @@ import Tooltip from '@material-ui/core/Tooltip';
 import '../styles/message.css';
 
 class Message extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            imageLink: ""
+        }
+    }
+
+    componentWillMount() {
+        let image = new Image();
+        image.src = this.props.message;
+        image.onload = () => {
+            this.setState({
+                imageLink: this.props.message
+            })
+        };
+        image.onerror = () => {
+            this.setState({
+                imageLink: ""
+            })
+        }
+    }
+
     render() {
         if (this.props.senderId === this.props.my.uid) return (
-            <Tooltip title={this.props.time} placement="top-start">
-                <ListItem className="my-message">
-                    <ListItemText primary={this.props.message} />
-                    <Avatar alt="avatar" src={this.props.my.photoURL} />
-                </ListItem>
-            </Tooltip>
+            <div>
+                <Tooltip title={this.props.time} placement="top-start">
+                    <ListItem className="my-message">
+                        <ListItemText primary={this.props.message} />
+                        <Avatar alt="avatar" src={this.props.my.photoURL} />
+                    </ListItem>
+                </Tooltip>
+                {this.state.imageLink !== "" ?  <ListItem className="my-message"><img alt="aa" src={this.state.imageLink} /></ListItem> : ""}
+            </div>
         );
         return <Tooltip title={this.props.time} placement="top-start">
             <ListItem >
+                {this.state.imageLink !== "" ? <div>asdasdasd</div> : ""}
                 <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
                 <ListItemText primary={this.props.message} />
             </ListItem>

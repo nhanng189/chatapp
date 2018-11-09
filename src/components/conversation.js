@@ -33,7 +33,7 @@ class Conversation extends Component {
         })
     }
 
-    onSubmit = (event) => {
+    onSubmit = async (event) => {
         event.preventDefault();
         this.props.firebase.database().ref('/conversation/' + this.props.params.conversationId).push({
             time: moment().format('lll'),
@@ -63,6 +63,22 @@ class Conversation extends Component {
         this.scrollToBottom();
     }
 
+    onUpload = (event) => {
+        let selectedFile = event.target.files[0];
+        let fileName = selectedFile.name;
+        let storageRef = this.props.firebase.storage().ref('/images/' + fileName);
+        let uploadTask = storageRef.put(selectedFile);
+
+        uploadTask.on('state_changed', (snapshot) => {
+        }, (error) => {
+
+        }, () => {
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                console.log(downloadURL);
+            });
+        })
+    }
+
     render() {
         let elements;
         if (this.props.messages) {
@@ -89,7 +105,7 @@ class Conversation extends Component {
                         </div>
                     </div>
                 </div>
-                <input style={{display: "none"}} accept="image" id="icon-button-file" type="file" />
+                <input style={{ display: "none" }} onChange={this.onUpload} accept="image" id="icon-button-file" type="file" />
                 <label htmlFor="icon-button-file">
                     <IconButton color="primary" component="span">
                         <PhotoCamera />
