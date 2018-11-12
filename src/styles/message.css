@@ -1,3 +1,15 @@
+.message-content {
+    font-size: medium !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    padding: 5px 20px 5px 20px !important;
+}
+
 .my-message {
     text-align: right !important;
+    padding-left: 20% !important;
+    justify-content: flex-end !important;
+}
+
+.user2-message {
+    padding-right: 20% !important;
 }

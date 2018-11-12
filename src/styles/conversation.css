@@ -21,6 +21,10 @@
     overflow-y: auto;
 }
 
+.send-image {
+    padding: 20px 0 0 25px !important;
+}
+
 .dummy-div {
     float: left;
     clear: both;

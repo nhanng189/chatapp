@@ -1,11 +1,7 @@
-.MuiTypography-subheading-66 {
+.user-display-name {
     font-size: medium !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-}
-
-.MuiTypography-body1-68 {
-    font-size: xx-small !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    padding: 5px 0 5px 0 !important;
 }
 
 .user-container {
@@ -25,10 +21,10 @@
 
 .user-online {
     color: green;
-    paddingTop: 5px;
+    padding-top: 5px;
 }
 
 .user-offline {
     color: red;
-    paddingTop: 5px;
+    padding-top: 5px;
 }

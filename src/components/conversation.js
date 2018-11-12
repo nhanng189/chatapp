@@ -11,6 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
+import Grid from '@material-ui/core/Grid';
 
 import Message from './message';
 import '../styles/conversation.css';
@@ -20,7 +21,8 @@ class Conversation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputMessage: ""
+            inputMessage: "",
+            imageLink: ""
         }
     }
 
@@ -28,27 +30,47 @@ class Conversation extends Component {
         var target = event.target;
         var value = target.value;
         var name = target.name;
+        
+        //Tracking image link in message
+        let buffer = value.split(" ");
+        buffer.forEach((str)=>{
+            let image = new Image();
+            image.src = str;
+            image.onload = () => {
+                this.setState({
+                    imageLink: str
+                });
+            };
+        })
+
         this.setState({
             [name]: value
         })
     }
 
-    onSubmit = async (event) => {
-        event.preventDefault();
+    sendMessage = () => {
+        //Push message to database
         this.props.firebase.database().ref('/conversation/' + this.props.params.conversationId).push({
             time: moment().format('lll'),
             senderId: this.props.my.uid,
-            message: this.state.inputMessage
+            message: this.state.inputMessage,
+            imageLink: this.state.imageLink
         })
-        this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid).set({
-            lastMessageTime: moment().format()
-        })
-        this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id).set({
-            lastMessageTime: moment().format()
-        })
+
+        //Update last message time of users
+        this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid + '/lastMessageTime').set(moment().format())
+        this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id + '/lastMessageTime').set(moment().format())
+        
+        //Reset default state
         this.setState({
-            inputMessage: ""
+            inputMessage: "",
+            imageLink: ""
         })
+    }
+
+    onSubmit = (event) => {
+        event.preventDefault();
+        this.sendMessage();
     }
 
     scrollToBottom = () => {
@@ -74,7 +96,10 @@ class Conversation extends Component {
 
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                console.log(downloadURL);
+                this.setState({
+                    inputMessage: downloadURL
+                });
+                this.sendMessage();
             });
         })
     }
@@ -84,7 +109,8 @@ class Conversation extends Component {
         if (this.props.messages) {
             elements = Object.values(this.props.messages).map((messageData) => {
                 return <Message message={messageData.message} senderId={messageData.senderId}
-                    time={messageData.time} my={this.props.my} user2={this.props.user2} />
+                    time={messageData.time} my={this.props.my} user2={this.props.user2}
+                    imageLink={messageData.imageLink} />
             })
         }
         else elements = "";
@@ -105,26 +131,32 @@ class Conversation extends Component {
                         </div>
                     </div>
                 </div>
-                <input style={{ display: "none" }} onChange={this.onUpload} accept="image" id="icon-button-file" type="file" />
-                <label htmlFor="icon-button-file">
-                    <IconButton color="primary" component="span">
-                        <PhotoCamera />
-                    </IconButton>
-                </label>
-                <form onSubmit={this.onSubmit}>
-                    <TextField
-                        name="inputMessage"
-                        value={this.state.inputMessage}
-                        placeholder="Type something"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        onChange={this.onChange}
-                    />
-                </form>
+                <Grid container justify="center" spacing={8}>
+                    <Grid item xs={11}>
+                        <form onSubmit={this.onSubmit}>
+                            <TextField 
+                                name="inputMessage"
+                                value={this.state.inputMessage}
+                                placeholder="Type something"
+                                fullWidth
+                                margin="normal"
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={this.onChange}
+                            />
+                        </form>
+                    </Grid>
+                    <Grid className="send-image" item xs={1}>
+                        <input style={{ display: "none" }} onChange={this.onUpload} accept="image" id="icon-button-file" type="file" />
+                        <label htmlFor="icon-button-file">
+                            <IconButton color="primary" component="span">
+                                <PhotoCamera />
+                            </IconButton>
+                        </label>
+                    </Grid>
+                </Grid>
             </div>
         );
     }

@@ -10,6 +10,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Star from '@material-ui/icons/Star';
+import StarBorder from '@material-ui/icons/StarBorderOutlined';
 
 import Conversation from "./conversation";
 import '../styles/users.css';
@@ -45,6 +49,14 @@ class Users extends Component {
     return `${user2Id}-${user1Id}`;
   }
 
+  onCheckChange = (user2Id) => {
+    this.state.users.forEach((user) => {
+      if (user.id === user2Id) {
+        this.props.firebase.database().ref('/users/' + user2Id + '/chatHistory/' + this.props.auth.uid + '/isStar').set(!user.chatHistory[this.props.auth.uid].isStar)
+      }
+    })
+  }
+
   componentWillMount() {
     //Get list presence users
     this.props.firebase.database().ref('/presence/').on('value', (data) => {
@@ -60,19 +72,39 @@ class Users extends Component {
         return { ...val, id: id }
       })
 
-      //Add chatHistory data in case of undefined
-      users.forEach(async (user) => {
+      //Add chatHistory and isStar data in case of undefined
+      users.forEach((user) => {
         if (typeof user.chatHistory === 'undefined') user.chatHistory = {};
         if (typeof user.chatHistory[this.props.auth.uid] === 'undefined') user.chatHistory[this.props.auth.uid] = {};
+
         if (typeof user.chatHistory[this.props.auth.uid].lastMessageTime === 'undefined') user.chatHistory[this.props.auth.uid].lastMessageTime = "";
+        if (typeof user.chatHistory[this.props.auth.uid].isStar === 'undefined') user.chatHistory[this.props.auth.uid].isStar = false;
       })
 
-      //Ordered users by chat history
-      users = _.orderBy(users, `chatHistory.${this.props.auth.uid}.lastMessageTime`, 'desc');
+      let highUsers = [];
+      let lowUser = [];
+
+      users.forEach((user) => {
+        if (_.has(this.state.presence, user.id) === true) {
+          if (user.chatHistory[this.props.auth.uid].isStar === true) {
+            highUsers.push(user)
+          }
+          else lowUser.push(user)
+        }
+        else lowUser.push(user)
+      })
+
+      highUsers = _.orderBy(highUsers, `chatHistory.${this.props.auth.uid}.lastMessageTime`, 'desc');
+      lowUser = _.orderBy(lowUser, `chatHistory.${this.props.auth.uid}.lastMessageTime`, 'desc');
+      let orderedUsers = [];
+      orderedUsers = highUsers.concat(lowUser);
+
+      //Ordered users by star, then chat history
+      // users = _.orderBy(users, [`chatHistory.${this.props.auth.uid}.isStar`, `chatHistory.${this.props.auth.uid}.lastMessageTime`], ['desc', 'desc']);
 
       this.setState({
-        users: users,
-        displayUsers: users
+        users: orderedUsers,
+        displayUsers: orderedUsers
       })
 
       //If no user is selected, set first user as default
@@ -83,7 +115,6 @@ class Users extends Component {
   }
 
   render() {
-    
     //Generate listItem of each user
     let elements = this.state.displayUsers.map((user) => {
       return (
@@ -92,8 +123,14 @@ class Users extends Component {
 
           {/* //Check if user is online */}
           {_.has(this.state.presence, user.id) === true
-            ? <ListItemText primary={user.displayName} secondary={<i className="fa fa-circle user-online">&nbsp;&nbsp;Online</i>} />
-            : <ListItemText primary={user.displayName} secondary={<i className="fa fa-circle user-offline">&nbsp;&nbsp;Last seen: {user.lastOnline}</i>} />}
+            ? <ListItemText secondary={<i className="fa fa-circle user-online">&nbsp;&nbsp;Online</i>} ><div className="user-display-name">{user.displayName}</div></ListItemText>
+            : <ListItemText secondary={<i className="fa fa-circle user-offline">&nbsp;&nbsp;Last seen: {user.lastOnline}</i>} ><div className="user-display-name">{user.displayName}</div></ListItemText>}
+
+          <FormControlLabel
+            control={
+              <Checkbox icon={<StarBorder />} checkedIcon={<Star />} onChange={() => this.onCheckChange(user.id)} checked={user.chatHistory[this.props.auth.uid].isStar} />
+            }
+          />
         </ListItem>
       );
     });
