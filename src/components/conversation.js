@@ -97,7 +97,8 @@ class Conversation extends Component {
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                 this.setState({
-                    inputMessage: downloadURL
+                    inputMessage: "",
+                    imageLink: downloadURL
                 });
                 this.sendMessage();
             });

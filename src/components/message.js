@@ -29,7 +29,7 @@ class Message extends Component {
             <Tooltip title={this.props.time} placement="top-start">
                 <ListItem className="user2-message">
                     <Avatar alt="avatar" src={this.props.user2.avatarUrl} />
-                        <div className="message-content">{this.props.message}</div>
+                    <div className="message-content">{this.props.message}</div>
                 </ListItem>
             </Tooltip>
             {this.props.imageLink !== "" ? <ListItem className="user2-message">
