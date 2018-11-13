@@ -8,6 +8,10 @@
     text-align: center !important;
 }
 
+.conservation-user {
+    font-size: large;
+}
+
 .messages-container {
     width: 100%;
     height: calc(100% - 80px);

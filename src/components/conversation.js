@@ -120,7 +120,7 @@ class Conversation extends Component {
             <div className="conversation-container">
                 <div className="messages-container">
                     <ListItem className="conservation-title">
-                        <ListItemText>{this.props.user2.displayName}</ListItemText>
+                        <ListItemText><div className="conservation-user">{this.props.user2.displayName}</div></ListItemText>
                     </ListItem>
                     <Divider />
                     <div className="message-container">
