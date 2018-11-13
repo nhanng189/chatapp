@@ -30,10 +30,10 @@ class Conversation extends Component {
         var target = event.target;
         var value = target.value;
         var name = target.name;
-        
+
         //Tracking image link in message
         let buffer = value.split(" ");
-        buffer.forEach((str)=>{
+        buffer.forEach((str) => {
             let image = new Image();
             image.src = str;
             image.onload = () => {
@@ -60,7 +60,7 @@ class Conversation extends Component {
         //Update last message time of users
         this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid + '/lastMessageTime').set(moment().format())
         this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id + '/lastMessageTime').set(moment().format())
-        
+
         //Reset default state
         this.setState({
             inputMessage: "",
@@ -96,11 +96,15 @@ class Conversation extends Component {
 
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                this.setState({
-                    inputMessage: "",
-                    imageLink: downloadURL
-                });
-                this.sendMessage();
+                let image = new Image();
+                image.src = downloadURL;
+                image.onload = () => {
+                    this.setState({
+                        inputMessage: "",
+                        imageLink: downloadURL
+                    });
+                    this.sendMessage();
+                };
             });
         })
     }
@@ -135,7 +139,7 @@ class Conversation extends Component {
                 <Grid container justify="center" spacing={8}>
                     <Grid item xs={11}>
                         <form onSubmit={this.onSubmit}>
-                            <TextField 
+                            <TextField
                                 name="inputMessage"
                                 value={this.state.inputMessage}
                                 placeholder="Type something"
