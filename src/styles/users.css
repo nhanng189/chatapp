@@ -15,6 +15,12 @@
     height: 100%
 }
 
+.users-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+}
+
 .search {
     padding: 0 20px 0 20px;
 }

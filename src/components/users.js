@@ -148,9 +148,11 @@ class Users extends Component {
                 shrink: true,
               }}
             ></TextField>
+            <div className="users-container">
             <List component="nav">
               {elements}
             </List>
+            </div>
           </Grid>
           <Grid item xs={9}>
             <Conversation my={this.props.auth} user2={this.state.user2}
