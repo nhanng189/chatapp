@@ -22,7 +22,8 @@ class Conversation extends Component {
         super(props);
         this.state = {
             inputMessage: "",
-            imageLink: ""
+            imageLink: "",
+            backgroundLink: ""
         }
     }
 
@@ -42,6 +43,15 @@ class Conversation extends Component {
                 });
             };
         })
+        
+        //Tracking background link in message
+        if(value.includes("sudo dj")) {
+            let backgroundId = value.substring(8);
+            let backgroundLink = "https://www.nhaccuatui.com/mh/background/" + backgroundId
+            this.setState({
+                backgroundLink: backgroundLink
+            })
+        }
 
         this.setState({
             [name]: value
@@ -57,6 +67,10 @@ class Conversation extends Component {
             imageLink: this.state.imageLink
         })
 
+        //Push background music to database
+        this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid + '/backgroundTrack').set(this.state.backgroundLink)
+        this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id + '/backgroundTrack').set(this.state.backgroundLink)
+
         //Update last message time of users
         this.props.firebase.database().ref('/users/' + this.props.user2.id + '/chatHistory/' + this.props.my.uid + '/lastMessageTime').set(moment().format())
         this.props.firebase.database().ref('/users/' + this.props.my.uid + '/chatHistory/' + this.props.user2.id + '/lastMessageTime').set(moment().format())
@@ -64,7 +78,8 @@ class Conversation extends Component {
         //Reset default state
         this.setState({
             inputMessage: "",
-            imageLink: ""
+            imageLink: "",
+            backgroundLink: ""
         })
     }
 
@@ -122,6 +137,7 @@ class Conversation extends Component {
 
         return (
             <div className="conversation-container">
+                <iframe style={{display: "none"}} title="bkg" src={this.state.backgroundLink} allow="autoplay"></iframe>
                 <div className="messages-container">
                     <ListItem className="conservation-title">
                         <ListItemText><div className="conservation-user">{this.props.user2.displayName}</div></ListItemText>
