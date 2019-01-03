@@ -23,8 +23,7 @@ class Conversation extends Component {
     this.state = {
       inputMessage: "",
       imageLink: "",
-      soundTrack: "",
-      streamTrack: ""
+      soundTrack: ""
     }
   }
 
